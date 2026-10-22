@@ -136,11 +136,14 @@ def what_was_learned(data, models):
                 fitted = clone(model).fit(data.iloc[train_idx][cols], y[train_idx])
                 coefs.append(fitted.named_steps["model"].coef_[0])
         coefs = pd.DataFrame(coefs, columns=cols)
-        median_sign = np.sign(coefs.median())
+        kept = coefs != 0
+        positive = (coefs > 0).sum()
+        # of the refits that kept the feature: share agreeing on its direction
+        same_sign = np.maximum(positive, kept.sum() - positive) / kept.sum().replace(0, np.nan)
         tables[name] = pd.DataFrame({
             "mean_weight": coefs.mean(),
-            "kept_%": (coefs != 0).mean() * 100,
-            "same_sign_%": (np.sign(coefs).eq(median_sign) & (coefs != 0)).mean() * 100,
+            "kept_%": kept.mean() * 100,
+            "same_sign_%": same_sign * 100,
             "single_feature_AUC": pd.Series(univariate)[cols],
         }).sort_values("mean_weight", key=abs, ascending=False)
     return tables
