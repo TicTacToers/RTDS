@@ -1,0 +1,9 @@
+numpy
+pandas
+scikit-learn
+SimpleITK
+matplotlib
+ipykernel  # lets VS Code / Jupyter use this venv as a notebook kernel
+# PyPI's pyradiomics sdists are broken on Python 3.13 (bad 3.1.0 metadata,
+# 3.0.1 setup.py needs numpy at build time). Install from GitHub instead.
+pyradiomics @ git+https://github.com/AIM-Harvard/pyradiomics.git@8ed579383b44806651c463d5e691f3b2b57522ab
