@@ -128,7 +128,7 @@ def features_one_patient(row):
     return out
 
 
-def extract_all(patients):
+def extract_all(patients, output=OUTPUT):
     rows, failed = [], []
     for i, (_, row) in enumerate(patients.iterrows(), start=1):
         try:
@@ -138,8 +138,8 @@ def extract_all(patients):
         if i % 25 == 0 or i == len(patients):
             print(f"  processed {i}/{len(patients)} patients")
     table = pd.DataFrame(rows)
-    table.to_csv(OUTPUT, index=False)
-    print(f"\nSaved {len(table)} patients x {len(FEATURES)} features -> {OUTPUT}")
+    table.to_csv(output, index=False)
+    print(f"\nSaved {len(table)} patients x {len(FEATURES)} features -> {output}")
     if failed:
         print(f"{len(failed)} patients FAILED:")
         for pid, err in failed:
